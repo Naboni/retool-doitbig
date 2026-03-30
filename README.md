@@ -1,16 +1,72 @@
-# React + Vite
+# **Code Challenge — Simplifying Dynamic Data**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Version 1 - March 2026**
 
-Currently, two official plugins are available:
+## **Context**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Non-technical users struggle with concepts like `{{input.value}}`.\
+&#x20;Your goal is to design a **simpler, more intuitive way** to work with dynamic data in a UI.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## **Challenge**
 
-## Expanding the ESLint configuration
+Create a small prototype that allows a non-technical user to:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Display dynamic data (e.g. show a name entered in an input)
+
+2. Perform at least **2 additional actions**, such as:
+   - Conditional logic (e.g. show/hide based on input)
+
+   - Combining values (e.g. full name)
+
+   - Transformations (e.g. uppercase, formatting)
+
+⚠️ Constraint:
+
+- Do **not** use syntax like `{{ }}` or anything code-like in the UX
+
+---
+
+## **Provided UI**
+
+- Text element
+
+- Example input fields: Name & age
+
+You can change this if needed, but keep it simple.
+
+---
+
+## **Deliverables**
+
+- Working prototype (rough is fine)
+
+- 5–10 min Loom (or short write-up) explaining:
+  - Your approach
+
+  - How a non-technical user would use it
+
+  - Why it’s better than traditional approaches
+
+---
+
+## **What we care about**
+
+- Your **thinking**, not polish
+
+- Simplicity over complexity
+
+- Clear mental model 
+
+Delivery
+When you are finished, send an invite to your github, bitbucket or gitlab repository to: ismail-doitbig
+
+Include a loom with your thought process.
+You will be judged on:
+7 points: Thought process and coming up with a solution
+3 points: The ease of use for the solution
+Max reachable score 10/10 points
+Besides the above points your app will be compared against other developer submissions.
+
+Goodluck!
