@@ -5,6 +5,7 @@
 ## **Context**
 
 Non-technical users struggle with concepts like `{{input.value}}` but have a strong desire to create dynamic apps.\
+An example of a low-code version is [retool](https://retool.com/) which uses `{{}}` that works great for technical users but becomes difficult for non-technical users.
 &#x20;Your goal is to design a **simpler, more intuitive way** to work with dynamic data in a UI.
 
 ## **Challenge**
