@@ -1,13 +1,11 @@
-# **Code Challenge — Simplifying Dynamic Data**
+# **Code Challenge — Simplifying Dynamic Data for no-code tools**
 
 **Version 1 - March 2026**
 
 ## **Context**
 
-Non-technical users struggle with concepts like `{{input.value}}`.\
+Non-technical users struggle with concepts like `{{input.value}}` but have a strong desire to create dynamic apps.\
 &#x20;Your goal is to design a **simpler, more intuitive way** to work with dynamic data in a UI.
-
----
 
 ## **Challenge**
 
