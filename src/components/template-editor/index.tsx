@@ -23,6 +23,7 @@ export function TemplateEditor() {
     null,
   );
   const [menuIndex, setMenuIndex] = useState(0);
+  const [menuFilter, setMenuFilter] = useState("");
   const [popover, setPopover] = useState<{
     element: HTMLSpanElement;
     rect: DOMRect;
@@ -36,6 +37,12 @@ export function TemplateEditor() {
   const syncToStore = useCallback(() => {
     if (editorRef.current) setTemplate(parseSegments(editorRef.current));
   }, [setTemplate]);
+
+  const closeMenu = useCallback(() => {
+    setMenuPos(null);
+    setMenuFilter("");
+    setMenuIndex(0);
+  }, []);
 
   const insertField = useCallback(
     (fieldId: string) => {
@@ -59,35 +66,60 @@ export function TemplateEditor() {
         editor.appendChild(document.createTextNode("\u00A0"));
       }
 
-      setMenuPos(null);
-      setMenuIndex(0);
+      closeMenu();
       syncToStore();
       editor.focus();
     },
-    [syncToStore],
+    [syncToStore, closeMenu],
   );
+
+  const filteredFields = menuPos
+    ? FIELDS.filter((f) =>
+        f.label.toLowerCase().startsWith(menuFilter.toLowerCase()),
+      )
+    : FIELDS;
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (menuPos) {
         if (e.key === "ArrowDown") {
           e.preventDefault();
-          setMenuIndex((i) => (i + 1) % FIELDS.length);
+          setMenuIndex((i) => (i + 1) % Math.max(filteredFields.length, 1));
           return;
         }
         if (e.key === "ArrowUp") {
           e.preventDefault();
-          setMenuIndex((i) => (i - 1 + FIELDS.length) % FIELDS.length);
+          setMenuIndex(
+            (i) =>
+              (i - 1 + filteredFields.length) %
+              Math.max(filteredFields.length, 1),
+          );
           return;
         }
         if (e.key === "Enter") {
           e.preventDefault();
-          insertField(FIELDS[menuIndex].id);
+          if (filteredFields[menuIndex]) insertField(filteredFields[menuIndex].id);
           return;
         }
         if (e.key === "Escape") {
           e.preventDefault();
-          setMenuPos(null);
+          closeMenu();
+          return;
+        }
+        if (e.key === "Backspace") {
+          e.preventDefault();
+          if (menuFilter.length > 0) {
+            setMenuFilter((f) => f.slice(0, -1));
+            setMenuIndex(0);
+          } else {
+            closeMenu();
+          }
+          return;
+        }
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          setMenuFilter((f) => f + e.key);
+          setMenuIndex(0);
           return;
         }
       }
@@ -98,11 +130,12 @@ export function TemplateEditor() {
         if (sel && sel.rangeCount > 0) {
           const rect = sel.getRangeAt(0).getBoundingClientRect();
           setMenuPos({ x: rect.left, y: rect.bottom + 4 });
+          setMenuFilter("");
           setMenuIndex(0);
         }
       }
     },
-    [menuPos, menuIndex, insertField],
+    [menuPos, menuIndex, filteredFields, insertField, closeMenu],
   );
 
   const handleClick = useCallback((e: MouseEvent) => {
@@ -165,9 +198,11 @@ export function TemplateEditor() {
       {menuPos && (
         <SuggestionMenu
           position={menuPos}
+          fields={filteredFields}
           selectedIndex={menuIndex}
+          filter={menuFilter}
           onSelect={insertField}
-          onClose={() => setMenuPos(null)}
+          onClose={closeMenu}
         />
       )}
 
