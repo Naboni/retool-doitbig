@@ -31,12 +31,11 @@ export type Visibility = {
   conditions: VisibilityCondition[];
 };
 
-export const FIELDS: Field[] = [
-  { id: "name", label: "Name", inputType: "text", transforms: ["none", "uppercase", "lowercase", "capitalize"] },
-  { id: "age", label: "Age", inputType: "number", transforms: [] },
-  { id: "email", label: "Email", inputType: "text", transforms: ["none", "lowercase"] },
-  { id: "city", label: "City", inputType: "text", transforms: ["none", "uppercase", "lowercase", "capitalize"] },
-];
+export function defaultTransforms(inputType: "text" | "number"): Transform[] {
+  return inputType === "text"
+    ? ["none", "uppercase", "lowercase", "capitalize"]
+    : [];
+}
 
 export const OPERATORS: { value: Operator; label: string; needsValue: boolean; types: ("text" | "number")[] }[] = [
   { value: "is_empty", label: "is empty", needsValue: false, types: ["text", "number"] },

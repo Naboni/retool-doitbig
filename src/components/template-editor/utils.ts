@@ -1,4 +1,4 @@
-import { FIELDS } from "@/types";
+import { useStore } from "@/store";
 import type { Segment, Transform } from "@/types";
 
 const PILL_CLASS =
@@ -8,7 +8,8 @@ export function createPillElement(
   fieldId: string,
   transform: Transform = "none",
 ) {
-  const field = FIELDS.find((f) => f.id === fieldId);
+  const fields = useStore.getState().fields;
+  const field = fields.find((f) => f.id === fieldId);
   const span = document.createElement("span");
   span.dataset.field = fieldId;
   span.dataset.transform = transform;

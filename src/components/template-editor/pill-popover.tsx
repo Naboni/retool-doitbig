@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { FIELDS } from "@/types";
+import { useStore } from "@/store";
 import type { Transform } from "@/types";
 
 const TRANSFORMS: { value: Transform; label: string }[] = [
@@ -25,9 +25,10 @@ export function PillPopover({
   onClose,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const fields = useStore((s) => s.fields);
   const [localField, setLocalField] = useState(field);
   const [localTransform, setLocalTransform] = useState(transform);
-  const fieldDef = FIELDS.find((f) => f.id === localField);
+  const fieldDef = fields.find((f) => f.id === localField);
   const availableTransforms = TRANSFORMS.filter((t) =>
     fieldDef?.transforms.includes(t.value),
   );
@@ -54,7 +55,7 @@ export function PillPopover({
             value={localField}
             onChange={(e) => {
               const newField = e.target.value;
-              const newFieldDef = FIELDS.find((f) => f.id === newField);
+              const newFieldDef = fields.find((f) => f.id === newField);
               const keepTransform = newFieldDef?.transforms.includes(localTransform);
               const newTransform = keepTransform ? localTransform : "none";
               setLocalField(newField);
@@ -62,7 +63,7 @@ export function PillPopover({
               onChange(newField, newTransform);
             }}
           >
-            {FIELDS.map((f) => (
+            {fields.map((f) => (
               <option key={f.id} value={f.id}>
                 {f.label}
               </option>

@@ -1,7 +1,8 @@
 import { useStore } from "@/store";
-import { FIELDS, OPERATORS } from "@/types";
+import { OPERATORS } from "@/types";
 
 export function VisibilityRule() {
+  const fields = useStore((s) => s.fields);
   const visibility = useStore((s) => s.visibility);
   const setEnabled = useStore((s) => s.setVisibilityEnabled);
   const addCondition = useStore((s) => s.addCondition);
@@ -10,11 +11,7 @@ export function VisibilityRule() {
 
   return (
     <div>
-      <h2 className="text-xs uppercase tracking-wide text-gray-400">
-        Visibility
-      </h2>
-
-      <label className="mt-3 flex items-center gap-2 text-sm text-gray-600">
+      <label className="flex items-center gap-2 text-sm text-gray-600">
         <input
           type="checkbox"
           className="rounded"
@@ -27,7 +24,7 @@ export function VisibilityRule() {
       {visibility.enabled && (
         <div className="mt-3 space-y-2">
           {visibility.conditions.map((condition, i) => {
-            const fieldDef = FIELDS.find((f) => f.id === condition.field);
+            const fieldDef = fields.find((f) => f.id === condition.field);
             const validOps = OPERATORS.filter((o) =>
               o.types.includes(fieldDef?.inputType ?? "text"),
             );
@@ -46,7 +43,7 @@ export function VisibilityRule() {
                   className="rounded border border-gray-300 px-2 py-1.5 text-sm"
                   value={condition.field}
                   onChange={(e) => {
-                    const newField = FIELDS.find((f) => f.id === e.target.value);
+                    const newField = fields.find((f) => f.id === e.target.value);
                     const newOps = OPERATORS.filter((o) =>
                       o.types.includes(newField?.inputType ?? "text"),
                     );
@@ -57,7 +54,7 @@ export function VisibilityRule() {
                     });
                   }}
                 >
-                  {FIELDS.map((f) => (
+                  {fields.map((f) => (
                     <option key={f.id} value={f.id}>
                       {f.label}
                     </option>

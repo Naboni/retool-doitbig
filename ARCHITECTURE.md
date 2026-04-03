@@ -4,44 +4,56 @@
 
 ```
 src/
-  app.tsx                          — Root layout (canvas + sidebar + inputs)
+  app.tsx                          — Single-column layout
   main.tsx                         — Entry point
-  store.ts                         — Zustand store (global state)
-  types.ts                         — Shared types and constants
-  lib.ts                           — Pure utility functions (transforms, visibility eval)
+  store.ts                         — Zustand store (fields, values, template, visibility)
+  types.ts                         — Shared types, operators, transform helpers
+  lib.ts                           — Pure functions (transforms, visibility evaluation)
   components/
-    canvas.tsx                     — Live preview rendering
+    canvas.tsx                     — Live preview with inline click-to-edit values
+    field-values.tsx               — Compact key-value field list with add/remove
     visibility-rule.tsx            — Dropdown-based condition builder
     template-editor/
       index.tsx                    — Main editor (contenteditable + state wiring)
       suggestion-menu.tsx          — "/" slash-command dropdown with type-ahead filter
       pill-popover.tsx             — Click-a-pill popover (field switch + transform)
-      utils.ts                    — DOM helpers (create pill, parse segments, render)
+      utils.ts                     — DOM helpers (create pill, parse segments, render)
 ```
 
 Imports use the `@/` path alias configured in `tsconfig.json` and `vite.config.ts`.
 
+## Layout
+
+Single-column, top-down flow. No sidebar, no dashboard. Preview is the hero element at the top, followed by field values, then collapsible configuration panels (template editor, visibility rules).
+
 ## State — Zustand
 
-Single store with selector-based subscriptions. No Provider, no boilerplate.
+Single store with selector-based subscriptions.
 
-- `values` — current input values keyed by field id
+- `fields` — user-definable field definitions (name, type, transforms). Users can add/remove custom fields.
+- `values` — current values keyed by field id
 - `template` — ordered array of text/variable segments
-- `visibility` — toggle + array of conditions (AND logic)
+- `visibility` — toggle + array of AND conditions
 
 ## Template Editor — "/" Mention System
 
-Users insert dynamic data by typing `/` in the editor, which opens a filtered suggestion dropdown. Selecting a field inserts an inline pill (`<span contenteditable="false">`). Clicking a pill opens a popover to change the field or apply a transform.
+Users type `/` to open a filtered suggestion dropdown. Selecting a field inserts an inline pill (`<span contenteditable="false">`). Clicking a pill opens a popover to change the field or apply a transform.
 
-The editor is a `contenteditable` div. On every edit, the DOM is parsed into a `Segment[]` array and synced to the store. The canvas reads this array to render live output.
+## Preview — Inline Editing
+
+Click any dynamic value or placeholder in the preview to edit it in-place. The preview serves as both output display and primary input method.
+
+## Field Values — Contextual Key-Value List
+
+Shows only fields referenced in the template. Unused fields are tucked into a collapsible "unused" section. Users can add custom fields (name + type) or remove unused ones.
 
 ## Visibility — Multiple Conditions
 
-Dropdown-based rule builder. Each condition is a sentence: "Show when [field] [operator] [value]". Multiple conditions use AND logic. Operators are filtered by field type (text fields get "contains", number fields get "greater than" / "less than").
+Dropdown-based rule builder with AND logic. Operators are filtered by field type.
 
 ## Transforms — Field-Aware
 
-Transforms are scoped per field type. Name/City support uppercase, lowercase, capitalize. Email supports lowercase only. Number fields have no transforms.
+Scoped per field definition. Text fields support uppercase/lowercase/capitalize. Number fields have no transforms. Custom fields get defaults based on type.
 
 ## Stack
 

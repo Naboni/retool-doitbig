@@ -8,7 +8,6 @@ import {
   type MouseEvent,
 } from "react";
 import { useStore } from "@/store";
-import { FIELDS } from "@/types";
 import type { Transform } from "@/types";
 import { createPillElement, parseSegments, renderToDOM } from "./utils";
 import { SuggestionMenu } from "./suggestion-menu";
@@ -16,6 +15,7 @@ import { PillPopover } from "./pill-popover";
 
 export function TemplateEditor() {
   const editorRef = useRef<HTMLDivElement>(null);
+  const fields = useStore((s) => s.fields);
   const template = useStore((s) => s.template);
   const setTemplate = useStore((s) => s.setTemplate);
 
@@ -74,10 +74,10 @@ export function TemplateEditor() {
   );
 
   const filteredFields = menuPos
-    ? FIELDS.filter((f) =>
+    ? fields.filter((f) =>
         f.label.toLowerCase().startsWith(menuFilter.toLowerCase()),
       )
-    : FIELDS;
+    : fields;
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -153,10 +153,11 @@ export function TemplateEditor() {
   const handlePillChange = useCallback(
     (field: string, transform: Transform) => {
       if (!popover) return;
+      const currentFields = useStore.getState().fields;
       popover.element.dataset.field = field;
       popover.element.dataset.transform = transform;
       popover.element.textContent =
-        FIELDS.find((f) => f.id === field)?.label ?? field;
+        currentFields.find((f) => f.id === field)?.label ?? field;
       syncToStore();
     },
     [popover, syncToStore],
@@ -177,8 +178,6 @@ export function TemplateEditor() {
 
   return (
     <div>
-      <h2 className="text-xs uppercase tracking-wide text-gray-400">Text</h2>
-
       <div
         ref={editorRef}
         contentEditable
@@ -187,7 +186,7 @@ export function TemplateEditor() {
         onKeyDown={handleKeyDown}
         onClick={handleClick}
         onPaste={handlePaste}
-        className="mt-2 min-h-[80px] rounded-md border border-gray-300 px-3 py-2 text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="min-h-[120px] rounded-md border border-gray-300 bg-white px-4 py-3 text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
       <p className="mt-1.5 text-xs text-gray-400">
