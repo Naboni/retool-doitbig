@@ -1,80 +1,56 @@
-# **Code Challenge — Simplifying Dynamic Data for no-code tools**
+# Dynamic Text Builder
 
-**Version 1 - March 2026**
+A no-code tool for building dynamic text templates. Insert variables, apply transforms, and set visibility rules — all without writing code.
 
-## **Context**
+## Getting Started
 
-Non-technical users struggle with concepts like `{{input.value}}` but have a strong desire to create dynamic apps.
+```bash
+npm install
+npm run dev
+```
 
-An example of a low-code version is [retool](https://retool.com/) which uses `{{}}` that works great for technical users but becomes difficult for non-technical users.
+Opens at `http://localhost:5173`.
 
-Your goal is to design a **simpler, more intuitive way** to work with dynamic data in a UI.
+## How It Works
 
-If you're not familiar with low-code tools you can signup for retool and try to drag and drop an input and a text component to bind the input value to the text
+### 1. Preview
 
-## **Challenge**
+The top section shows your live output. Click on any highlighted value to edit it directly inline.
 
-Create a small prototype that allows a non-technical user to:
+### 2. Template Editor
 
-1. Display dynamic data (e.g. show a name entered in an input)
+Type regular text in the editor. Press `/` to open a field menu — select a field to insert it as a visual pill. Click any pill to change the field or apply a transform (uppercase, lowercase, capitalize).
 
-2. Perform at least **2 additional actions**, such as:
-   - Conditional logic (e.g. show/hide based on input)
+### 3. Field Values
 
-   - Combining values (e.g. full name)
+Fields used in your template appear here with editable inputs. You can also add custom fields (text or number) or remove unused ones.
 
-   - Transformations (e.g. uppercase, formatting)
+### 4. Visibility Rules
 
-⚠️ Constraint:
+Toggle conditional visibility to show or hide the output based on field values. Add multiple conditions — operators adapt to the field type (e.g., "greater than" only appears for numbers).
 
-- Do **not** use syntax like `{{ }}` or anything code-like in the UX
+## Tech Stack
 
----
+- React 19 + TypeScript
+- Vite 6
+- TailwindCSS v4
+- Zustand (state management)
 
-## **Provided UI**
+## Project Structure
 
-- Text element
-
-- Example input fields: Name & age
-
-You can change this if needed, but keep it simple.
-
----
-
-## **Deliverables**
-
-- Working prototype (rough is fine)
-
-- 5–10 min Loom (or short write-up) explaining:
-  - Your approach
-
-  - How a non-technical user would use it
-
-  - Why it’s better than traditional approaches
-
----
-
-## **What we care about**
-
-- Your **thinking**, not polish
-
-- Simplicity over complexity
-
-- Clear mental model 
-
-**Delivery**
-
-When you are finished, send an invite to your github, bitbucket or gitlab repository to: ismail-doitbig
-
-Include a loom with your thought process.
-
-**You will be judged on:**
-
-- 7 points: Thought process and coming up with a solution
-- 3 points: The ease of use for the solution
-
-Max reachable score 10/10 points
-
-Besides the above points your app will be compared against other developer submissions.
-
-Goodluck!
+```
+src/
+  app.tsx                        — Single-column layout
+  store.ts                       — Zustand store (fields, values, template, visibility)
+  types.ts                       — Shared types, operators, transform helpers
+  lib.ts                         — Pure functions (transforms, visibility evaluation)
+  components/
+    canvas.tsx                   — Live preview with inline editing
+    field-values.tsx             — Key-value field list with add/remove
+    visibility-rule.tsx          — Condition builder
+    template-editor/
+      index.tsx                  — Contenteditable editor + state sync
+      suggestion-menu.tsx        — "/" slash-command dropdown
+      pill-popover.tsx           — Field/transform popover
+      utils.ts                   — DOM helpers (pills, parsing, rendering)
+```
