@@ -1,4 +1,5 @@
 import { useStore } from "@/store";
+import { FIELDS } from "@/types";
 import { applyTransform, evaluateVisibility } from "@/lib";
 
 export function Canvas() {
@@ -14,11 +15,9 @@ export function Canvas() {
 
   if (isEmpty || hasOnlyEmptyText) {
     return (
-      <div className="flex flex-1 items-center justify-center text-gray-300">
-        <p className="text-lg">
-          Use the sidebar editor to build dynamic text
-        </p>
-      </div>
+      <p className="text-lg text-gray-300">
+        Use the sidebar editor to build dynamic text
+      </p>
     );
   }
 
@@ -26,19 +25,27 @@ export function Canvas() {
     <div
       className={`transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-20"}`}
     >
-      <h1 className="text-2xl font-bold leading-relaxed">
-        {template.map((seg, i) =>
-          seg.type === "text" ? (
-            <span key={i}>{seg.value}</span>
-          ) : (
+      <h2 className="text-2xl font-bold leading-relaxed">
+        {template.map((seg, i) => {
+          if (seg.type === "text") return <span key={i}>{seg.value}</span>;
+
+          const val = values[seg.field];
+          const label = FIELDS.find((f) => f.id === seg.field)?.label ?? seg.field;
+
+          return val ? (
             <span key={i} className="text-blue-600">
-              {values[seg.field]
-                ? applyTransform(values[seg.field], seg.transform)
-                : `[${seg.field}]`}
+              {applyTransform(val, seg.transform)}
             </span>
-          ),
-        )}
-      </h1>
+          ) : (
+            <span
+              key={i}
+              className="rounded bg-gray-100 px-1.5 py-0.5 text-lg text-gray-400"
+            >
+              {label}
+            </span>
+          );
+        })}
+      </h2>
 
       {!visible && (
         <p className="mt-2 text-sm text-gray-400">
