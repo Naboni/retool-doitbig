@@ -2,6 +2,7 @@ import { useStore } from "@/store";
 import { FIELDS } from "@/types";
 import { Canvas } from "@/components/canvas";
 import { TemplateEditor } from "@/components/template-editor";
+import { VisibilityRule } from "@/components/visibility-rule";
 
 export default function App() {
   const values = useStore((s) => s.values);
@@ -35,6 +36,8 @@ export default function App() {
 
         <aside className="flex w-[400px] flex-col gap-6 border-l border-gray-200 bg-gray-50 p-6">
           <TemplateEditor />
+          <hr className="border-gray-200" />
+          <VisibilityRule />
         </aside>
       </div>
     </div>

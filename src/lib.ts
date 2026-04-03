@@ -1,4 +1,4 @@
-import type { Transform, VisibilityRule } from "@/types";
+import type { Transform, Visibility, VisibilityCondition } from "@/types";
 
 export function applyTransform(value: string, transform: Transform): string {
   switch (transform) {
@@ -13,26 +13,33 @@ export function applyTransform(value: string, transform: Transform): string {
   }
 }
 
-export function evaluateRule(
-  rule: VisibilityRule,
+function evaluateCondition(
+  condition: VisibilityCondition,
   values: Record<string, string>,
 ): boolean {
-  if (!rule.enabled) return true;
-  const val = values[rule.field] ?? "";
-  switch (rule.operator) {
+  const val = values[condition.field] ?? "";
+  switch (condition.operator) {
     case "is_empty":
       return val === "";
     case "is_not_empty":
       return val !== "";
     case "equals":
-      return val === rule.value;
+      return val === condition.value;
     case "not_equals":
-      return val !== rule.value;
+      return val !== condition.value;
     case "contains":
-      return val.includes(rule.value);
+      return val.includes(condition.value);
     case "greater_than":
-      return Number(val) > Number(rule.value);
+      return Number(val) > Number(condition.value);
     case "less_than":
-      return Number(val) < Number(rule.value);
+      return Number(val) < Number(condition.value);
   }
+}
+
+export function evaluateVisibility(
+  visibility: Visibility,
+  values: Record<string, string>,
+): boolean {
+  if (!visibility.enabled || visibility.conditions.length === 0) return true;
+  return visibility.conditions.every((c) => evaluateCondition(c, values));
 }

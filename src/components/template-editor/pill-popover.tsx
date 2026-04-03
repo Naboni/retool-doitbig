@@ -27,6 +27,10 @@ export function PillPopover({
   const ref = useRef<HTMLDivElement>(null);
   const [localField, setLocalField] = useState(field);
   const [localTransform, setLocalTransform] = useState(transform);
+  const fieldDef = FIELDS.find((f) => f.id === localField);
+  const availableTransforms = TRANSFORMS.filter((t) =>
+    fieldDef?.transforms.includes(t.value),
+  );
 
   useEffect(() => {
     const handle = (e: MouseEvent) => {
@@ -49,8 +53,13 @@ export function PillPopover({
             className="mt-1 block w-full rounded border border-gray-300 px-2 py-1.5 text-sm"
             value={localField}
             onChange={(e) => {
-              setLocalField(e.target.value);
-              onChange(e.target.value, localTransform);
+              const newField = e.target.value;
+              const newFieldDef = FIELDS.find((f) => f.id === newField);
+              const keepTransform = newFieldDef?.transforms.includes(localTransform);
+              const newTransform = keepTransform ? localTransform : "none";
+              setLocalField(newField);
+              setLocalTransform(newTransform);
+              onChange(newField, newTransform);
             }}
           >
             {FIELDS.map((f) => (
@@ -61,24 +70,26 @@ export function PillPopover({
           </select>
         </label>
 
-        <label className="block text-xs font-medium text-gray-500">
-          Transform
-          <select
-            className="mt-1 block w-full rounded border border-gray-300 px-2 py-1.5 text-sm"
-            value={localTransform}
-            onChange={(e) => {
-              const t = e.target.value as Transform;
-              setLocalTransform(t);
-              onChange(localField, t);
-            }}
-          >
-            {TRANSFORMS.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        {availableTransforms.length > 0 && (
+          <label className="block text-xs font-medium text-gray-500">
+            Transform
+            <select
+              className="mt-1 block w-full rounded border border-gray-300 px-2 py-1.5 text-sm"
+              value={localTransform}
+              onChange={(e) => {
+                const t = e.target.value as Transform;
+                setLocalTransform(t);
+                onChange(localField, t);
+              }}
+            >
+              {availableTransforms.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </div>
     </div>
   );

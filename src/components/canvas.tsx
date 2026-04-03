@@ -1,12 +1,10 @@
 import { useStore } from "@/store";
-import { applyTransform, evaluateRule } from "@/lib";
+import { applyTransform, evaluateVisibility } from "@/lib";
 
 export function Canvas() {
   const template = useStore((s) => s.template);
   const values = useStore((s) => s.values);
-  const visibility = useStore((s) => s.visibility);
-
-  const visible = evaluateRule(visibility, values);
+  const visible = useStore((s) => evaluateVisibility(s.visibility, s.values));
 
   const isEmpty = template.length === 0;
   const hasOnlyEmptyText =

@@ -8,6 +8,7 @@ export type Field = {
   id: string;
   label: string;
   inputType: "text" | "number";
+  transforms: Transform[];
 };
 
 export type Operator =
@@ -19,26 +20,30 @@ export type Operator =
   | "greater_than"
   | "less_than";
 
-export type VisibilityRule = {
-  enabled: boolean;
+export type VisibilityCondition = {
   field: string;
   operator: Operator;
   value: string;
 };
 
+export type Visibility = {
+  enabled: boolean;
+  conditions: VisibilityCondition[];
+};
+
 export const FIELDS: Field[] = [
-  { id: "name", label: "Name", inputType: "text" },
-  { id: "age", label: "Age", inputType: "number" },
-  { id: "email", label: "Email", inputType: "text" },
-  { id: "city", label: "City", inputType: "text" },
+  { id: "name", label: "Name", inputType: "text", transforms: ["none", "uppercase", "lowercase", "capitalize"] },
+  { id: "age", label: "Age", inputType: "number", transforms: [] },
+  { id: "email", label: "Email", inputType: "text", transforms: ["none", "lowercase"] },
+  { id: "city", label: "City", inputType: "text", transforms: ["none", "uppercase", "lowercase", "capitalize"] },
 ];
 
-export const OPERATORS: { value: Operator; label: string; needsValue: boolean }[] = [
-  { value: "is_empty", label: "is empty", needsValue: false },
-  { value: "is_not_empty", label: "is not empty", needsValue: false },
-  { value: "equals", label: "equals", needsValue: true },
-  { value: "not_equals", label: "does not equal", needsValue: true },
-  { value: "contains", label: "contains", needsValue: true },
-  { value: "greater_than", label: "is greater than", needsValue: true },
-  { value: "less_than", label: "is less than", needsValue: true },
+export const OPERATORS: { value: Operator; label: string; needsValue: boolean; types: ("text" | "number")[] }[] = [
+  { value: "is_empty", label: "is empty", needsValue: false, types: ["text", "number"] },
+  { value: "is_not_empty", label: "is not empty", needsValue: false, types: ["text", "number"] },
+  { value: "equals", label: "equals", needsValue: true, types: ["text", "number"] },
+  { value: "not_equals", label: "does not equal", needsValue: true, types: ["text", "number"] },
+  { value: "contains", label: "contains", needsValue: true, types: ["text"] },
+  { value: "greater_than", label: "is greater than", needsValue: true, types: ["number"] },
+  { value: "less_than", label: "is less than", needsValue: true, types: ["number"] },
 ];
