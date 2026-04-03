@@ -17,9 +17,11 @@ export function Canvas() {
     template[0].type === "text" &&
     template[0].value.trim() === "";
 
+  const hasVariables = template.some((s) => s.type === "variable");
+
   if (isEmpty || hasOnlyEmptyText) {
     return (
-      <p className="py-8 text-center text-lg text-gray-300">
+      <p className="py-12 text-center text-lg text-zinc-700">
         Use the template editor below to build dynamic text
       </p>
     );
@@ -29,7 +31,7 @@ export function Canvas() {
     <div
       className={`transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-20"}`}
     >
-      <p className="text-2xl font-bold leading-relaxed">
+      <p className="text-[22px] font-medium leading-relaxed text-zinc-100">
         {template.map((seg, i) => {
           if (seg.type === "text") return <span key={i}>{seg.value}</span>;
 
@@ -53,7 +55,7 @@ export function Canvas() {
           return val ? (
             <span
               key={i}
-              className="cursor-pointer text-blue-600 hover:underline"
+              className="cursor-pointer text-violet-400 hover:text-violet-300"
               onClick={() => setEditingField(seg.field)}
             >
               {applyTransform(val, seg.transform)}
@@ -61,7 +63,7 @@ export function Canvas() {
           ) : (
             <span
               key={i}
-              className="cursor-pointer rounded bg-gray-100 px-1.5 py-0.5 text-lg text-gray-400 hover:bg-gray-200"
+              className="cursor-pointer rounded bg-zinc-800 px-1.5 py-0.5 text-[18px] text-zinc-500 hover:bg-zinc-700"
               onClick={() => setEditingField(seg.field)}
             >
               {label}
@@ -71,7 +73,13 @@ export function Canvas() {
       </p>
 
       {!visible && (
-        <p className="mt-2 text-sm text-gray-400">Hidden by visibility rule</p>
+        <p className="mt-3 text-sm text-zinc-600">Hidden by visibility rule</p>
+      )}
+
+      {hasVariables && !editingField && (
+        <p className="mt-4 text-xs text-zinc-700">
+          Click on the highlighted values above to edit them directly
+        </p>
       )}
     </div>
   );
@@ -95,7 +103,7 @@ function InlineInput({
   return (
     <input
       ref={ref}
-      className="inline-block w-32 rounded border border-blue-400 bg-blue-50 px-1.5 py-0.5 text-2xl font-bold text-blue-600 outline-none"
+      className="inline-block w-32 rounded border border-violet-500/40 bg-zinc-900 px-1.5 py-0.5 text-[22px] font-medium text-violet-400 outline-none"
       value={draft}
       onChange={(e) => setDraft(e.target.value)}
       onBlur={() => onSave(draft)}

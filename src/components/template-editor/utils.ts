@@ -2,7 +2,7 @@ import { useStore } from "@/store";
 import type { Segment, Transform } from "@/types";
 
 const PILL_CLASS =
-  "inline-flex items-center px-2 py-0.5 mx-0.5 rounded-md bg-blue-100 text-blue-800 text-sm font-medium cursor-pointer select-none align-baseline";
+  "inline-flex items-center px-2 py-0.5 mx-0.5 rounded-md bg-violet-500/15 text-violet-300 text-sm font-medium cursor-pointer select-none align-baseline";
 
 export function createPillElement(
   fieldId: string,

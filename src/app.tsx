@@ -5,28 +5,21 @@ import { VisibilityRule } from "@/components/visibility-rule";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-gray-100 px-6 py-4">
-        <h1 className="text-sm font-semibold tracking-tight text-gray-800">
+    <div className="min-h-screen bg-zinc-950">
+      <header className="border-b border-zinc-800/60 px-6 py-3">
+        <h1 className="text-sm font-medium text-zinc-400">
           Dynamic Text Builder
         </h1>
       </header>
 
-      <div className="mx-auto max-w-3xl px-6 py-10 space-y-10">
+      <div className="mx-auto max-w-3xl px-6 pt-12 pb-20 space-y-12">
         <section>
           <Canvas />
         </section>
 
         <section>
-          <p className="mb-3 text-xs uppercase tracking-wide text-gray-400">
-            Field Values
-          </p>
-          <FieldValues />
-        </section>
-
-        <section>
           <details open>
-            <summary className="mb-3 cursor-pointer text-xs uppercase tracking-wide text-gray-400 hover:text-gray-600">
+            <summary className="mb-4 cursor-pointer text-[11px] font-semibold uppercase tracking-widest text-zinc-600 hover:text-zinc-400">
               Template
             </summary>
             <TemplateEditor />
@@ -34,8 +27,17 @@ export default function App() {
         </section>
 
         <section>
+          <details open>
+            <summary className="mb-4 cursor-pointer text-[11px] font-semibold uppercase tracking-widest text-zinc-600 hover:text-zinc-400">
+              Field Values
+            </summary>
+            <FieldValues />
+          </details>
+        </section>
+
+        <section>
           <details>
-            <summary className="mb-3 cursor-pointer text-xs uppercase tracking-wide text-gray-400 hover:text-gray-600">
+            <summary className="mb-4 cursor-pointer text-[11px] font-semibold uppercase tracking-widest text-zinc-600 hover:text-zinc-400">
               Visibility
             </summary>
             <VisibilityRule />

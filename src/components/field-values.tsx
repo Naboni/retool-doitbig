@@ -30,12 +30,14 @@ export function FieldValues() {
   return (
     <div>
       {usedFields.length > 0 && (
-        <div className="flex flex-wrap gap-x-6 gap-y-2">
+        <div className="grid grid-cols-3 gap-4">
           {usedFields.map((field) => (
-            <div key={field.id} className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500">{field.label}</span>
+            <div key={field.id} className="flex flex-col gap-1.5">
+              <span className="text-xs font-medium text-zinc-500">
+                {field.label}
+              </span>
               <input
-                className="w-36 rounded border border-gray-200 px-2 py-1 text-sm focus:border-blue-400 focus:outline-none"
+                className="w-full rounded border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-violet-500/50 focus:outline-none"
                 type={field.inputType}
                 placeholder={`Enter ${field.label.toLowerCase()}`}
                 min={field.inputType === "number" ? 0 : undefined}
@@ -48,28 +50,32 @@ export function FieldValues() {
       )}
 
       {unusedFields.length > 0 && (
-        <details className="mt-3">
-          <summary className="cursor-pointer text-xs text-gray-400 hover:text-gray-600">
+        <details className="mt-4">
+          <summary className="cursor-pointer text-xs text-zinc-600 hover:text-zinc-400">
             {unusedFields.length} unused field{unusedFields.length > 1 ? "s" : ""}
           </summary>
-          <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
+          <div className="mt-3 grid grid-cols-3 gap-4">
             {unusedFields.map((field) => (
-              <div key={field.id} className="flex items-center gap-2 text-sm">
-                <span className="text-gray-400">{field.label}</span>
+              <div key={field.id} className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-zinc-600">
+                    {field.label}
+                  </span>
+                  <button
+                    className="text-xs text-zinc-700 hover:text-red-400"
+                    onClick={() => removeField(field.id)}
+                  >
+                    ✕
+                  </button>
+                </div>
                 <input
-                  className="w-36 rounded border border-gray-200 px-2 py-1 text-sm focus:border-blue-400 focus:outline-none"
+                  className="w-full rounded border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-sm text-zinc-100 placeholder-zinc-600 focus:border-violet-500/50 focus:outline-none"
                   type={field.inputType}
                   placeholder={`Enter ${field.label.toLowerCase()}`}
                   min={field.inputType === "number" ? 0 : undefined}
                   value={values[field.id]}
                   onChange={(e) => setValue(field.id, e.target.value)}
                 />
-                <button
-                  className="text-xs text-gray-300 hover:text-red-500"
-                  onClick={() => removeField(field.id)}
-                >
-                  ✕
-                </button>
               </div>
             ))}
           </div>
@@ -77,9 +83,9 @@ export function FieldValues() {
       )}
 
       {showAdd ? (
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-4 flex items-center gap-2">
           <input
-            className="w-32 rounded border border-gray-300 px-2 py-1 text-sm focus:border-blue-400 focus:outline-none"
+            className="w-32 rounded border border-zinc-800 bg-zinc-900 px-2 py-1 text-sm text-zinc-100 placeholder-zinc-600 focus:border-violet-500/50 focus:outline-none"
             placeholder="Field name"
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
@@ -87,7 +93,7 @@ export function FieldValues() {
             autoFocus
           />
           <select
-            className="rounded border border-gray-300 px-2 py-1 text-sm"
+            className="rounded border border-zinc-800 bg-zinc-900 px-2 py-1 text-sm text-zinc-300"
             value={newType}
             onChange={(e) => setNewType(e.target.value as "text" | "number")}
           >
@@ -95,13 +101,13 @@ export function FieldValues() {
             <option value="number">Number</option>
           </select>
           <button
-            className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
+            className="rounded bg-violet-600 px-3 py-1 text-sm font-medium text-white hover:bg-violet-500"
             onClick={handleAdd}
           >
             Add
           </button>
           <button
-            className="text-sm text-gray-400 hover:text-gray-600"
+            className="text-sm text-zinc-600 hover:text-zinc-400"
             onClick={() => setShowAdd(false)}
           >
             Cancel
@@ -109,7 +115,7 @@ export function FieldValues() {
         </div>
       ) : (
         <button
-          className="mt-3 text-sm text-blue-600 hover:text-blue-800"
+          className="mt-4 text-sm text-violet-500 hover:text-violet-400"
           onClick={() => setShowAdd(true)}
         >
           + Add field

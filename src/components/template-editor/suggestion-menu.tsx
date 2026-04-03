@@ -31,28 +31,26 @@ export function SuggestionMenu({
   return (
     <div
       ref={ref}
-      className="fixed z-50 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+      className="fixed z-50 w-48 rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-xl"
       style={{ left: position.x, top: position.y }}
     >
       {filter && (
-        <div className="px-3 py-1.5 text-xs text-gray-400">
-          /{filter}
-        </div>
+        <div className="px-3 py-1.5 text-xs text-zinc-500">/{filter}</div>
       )}
       {!filter && (
-        <div className="px-3 py-1.5 text-xs text-gray-400">Insert field</div>
+        <div className="px-3 py-1.5 text-xs text-zinc-500">Insert field</div>
       )}
 
       {fields.length === 0 ? (
-        <div className="px-3 py-2 text-sm text-gray-400">No matches</div>
+        <div className="px-3 py-2 text-sm text-zinc-600">No matches</div>
       ) : (
         fields.map((field, i) => (
           <button
             key={field.id}
             className={`flex w-full items-center px-3 py-2 text-sm ${
               i === selectedIndex
-                ? "bg-blue-50 text-blue-700"
-                : "text-gray-700 hover:bg-gray-100"
+                ? "bg-violet-500/10 text-violet-400"
+                : "text-zinc-300 hover:bg-zinc-800"
             }`}
             onMouseDown={(e) => {
               e.preventDefault();

@@ -9,12 +9,15 @@ export function VisibilityRule() {
   const updateCondition = useStore((s) => s.updateCondition);
   const removeCondition = useStore((s) => s.removeCondition);
 
+  const selectClass =
+    "rounded border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-sm text-zinc-200 focus:border-violet-500/50 focus:outline-none";
+
   return (
     <div>
-      <label className="flex items-center gap-2 text-sm text-gray-600">
+      <label className="flex items-center gap-2 text-sm text-zinc-400">
         <input
           type="checkbox"
-          className="rounded"
+          className="rounded border-zinc-700 bg-zinc-900 text-violet-500 focus:ring-violet-500/30"
           checked={visibility.enabled}
           onChange={(e) => setEnabled(e.target.checked)}
         />
@@ -35,12 +38,12 @@ export function VisibilityRule() {
                 key={i}
                 className="flex flex-wrap items-center gap-2 text-sm"
               >
-                <span className="text-gray-500">
+                <span className="text-zinc-600">
                   {i === 0 ? "Show when" : "and"}
                 </span>
 
                 <select
-                  className="rounded border border-gray-300 px-2 py-1.5 text-sm"
+                  className={selectClass}
                   value={condition.field}
                   onChange={(e) => {
                     const newField = fields.find((f) => f.id === e.target.value);
@@ -62,7 +65,7 @@ export function VisibilityRule() {
                 </select>
 
                 <select
-                  className="rounded border border-gray-300 px-2 py-1.5 text-sm"
+                  className={selectClass}
                   value={condition.operator}
                   onChange={(e) =>
                     updateCondition(i, {
@@ -79,7 +82,7 @@ export function VisibilityRule() {
 
                 {activeOp?.needsValue && (
                   <input
-                    className="w-24 rounded border border-gray-300 px-2 py-1.5 text-sm"
+                    className="w-24 rounded border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-sm text-zinc-200 placeholder-zinc-600 focus:border-violet-500/50 focus:outline-none"
                     placeholder="value"
                     value={condition.value}
                     onChange={(e) =>
@@ -90,7 +93,7 @@ export function VisibilityRule() {
 
                 {visibility.conditions.length > 1 && (
                   <button
-                    className="text-gray-400 hover:text-red-500"
+                    className="text-zinc-700 hover:text-red-400"
                     onClick={() => removeCondition(i)}
                   >
                     ✕
@@ -101,7 +104,7 @@ export function VisibilityRule() {
           })}
 
           <button
-            className="mt-1 text-sm text-blue-600 hover:text-blue-800"
+            className="mt-1 text-sm text-violet-500 hover:text-violet-400"
             onClick={addCondition}
           >
             + Add condition

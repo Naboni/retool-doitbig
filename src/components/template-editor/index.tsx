@@ -186,11 +186,11 @@ export function TemplateEditor() {
         onKeyDown={handleKeyDown}
         onClick={handleClick}
         onPaste={handlePaste}
-        className="min-h-[120px] rounded-md border border-gray-300 bg-white px-4 py-3 text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="min-h-[120px] rounded-md border border-zinc-800 bg-zinc-900 px-4 py-3 text-base leading-relaxed text-zinc-100 focus:border-violet-500/50 focus:outline-none"
       />
 
-      <p className="mt-1.5 text-xs text-gray-400">
-        Type <kbd className="rounded bg-gray-200 px-1 font-mono">/</kbd> to
+      <p className="mt-1.5 text-xs text-zinc-600">
+        Type <kbd className="rounded bg-zinc-800 px-1 font-mono text-zinc-400">/</kbd> to
         insert a field
       </p>
 

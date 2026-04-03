@@ -41,17 +41,20 @@ export function PillPopover({
     return () => document.removeEventListener("mousedown", handle);
   }, [onClose]);
 
+  const selectClass =
+    "mt-1 block w-full rounded border border-zinc-800 bg-zinc-900 px-2 py-1.5 text-sm text-zinc-200 focus:border-violet-500/50 focus:outline-none";
+
   return (
     <div
       ref={ref}
-      className="fixed z-50 w-56 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
+      className="fixed z-50 w-56 rounded-lg border border-zinc-800 bg-zinc-900 p-3 shadow-xl"
       style={{ left: rect.left, top: rect.bottom + 4 }}
     >
       <div className="space-y-3">
-        <label className="block text-xs font-medium text-gray-500">
+        <label className="block text-xs font-medium text-zinc-500">
           Field
           <select
-            className="mt-1 block w-full rounded border border-gray-300 px-2 py-1.5 text-sm"
+            className={selectClass}
             value={localField}
             onChange={(e) => {
               const newField = e.target.value;
@@ -72,10 +75,10 @@ export function PillPopover({
         </label>
 
         {availableTransforms.length > 0 && (
-          <label className="block text-xs font-medium text-gray-500">
+          <label className="block text-xs font-medium text-zinc-500">
             Transform
             <select
-              className="mt-1 block w-full rounded border border-gray-300 px-2 py-1.5 text-sm"
+              className={selectClass}
               value={localTransform}
               onChange={(e) => {
                 const t = e.target.value as Transform;
