@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import type { Field, Segment, Visibility, VisibilityCondition } from "./types";
+import type { Field, InputType, Segment, Visibility, VisibilityCondition } from "./types";
 import { defaultTransforms } from "./types";
 
 const DEFAULT_FIELDS: Field[] = [
   { id: "name", label: "Name", inputType: "text", transforms: ["none", "uppercase", "lowercase", "capitalize"] },
-  { id: "age", label: "Age", inputType: "number", transforms: [] },
+  { id: "birthday", label: "Birthday", inputType: "date", transforms: ["none", "age"] },
   { id: "email", label: "Email", inputType: "text", transforms: ["none", "lowercase"] },
-  { id: "city", label: "City", inputType: "text", transforms: ["none", "uppercase", "lowercase", "capitalize"] },
+  { id: "team_members", label: "Team Members", inputType: "list", transforms: ["join_comma"] },
 ];
 
 type Store = {
@@ -15,7 +15,7 @@ type Store = {
   template: Segment[];
   visibility: Visibility;
 
-  addField: (label: string, inputType: "text" | "number") => void;
+  addField: (label: string, inputType: InputType) => void;
   removeField: (id: string) => void;
   setValue: (field: string, value: string) => void;
   setTemplate: (template: Segment[]) => void;
@@ -31,12 +31,14 @@ function slugify(label: string) {
 
 export const useStore = create<Store>((set, get) => ({
   fields: DEFAULT_FIELDS,
-  values: Object.fromEntries(DEFAULT_FIELDS.map((f) => [f.id, ""])),
+  values: Object.fromEntries(DEFAULT_FIELDS.map((f) => [f.id, f.inputType === "list" ? "[]" : ""])),
   template: [
     { type: "text", value: "Hello " },
     { type: "variable", field: "name", transform: "none" as const },
-    { type: "text", value: ", welcome to " },
-    { type: "variable", field: "city", transform: "none" as const },
+    { type: "text", value: ", you are " },
+    { type: "variable", field: "birthday", transform: "age" as const },
+    { type: "text", value: " years old. Team: " },
+    { type: "variable", field: "team_members", transform: "join_comma" as const },
   ],
   visibility: {
     enabled: false,
@@ -49,7 +51,7 @@ export const useStore = create<Store>((set, get) => ({
     const field: Field = { id, label, inputType, transforms: defaultTransforms(inputType) };
     set((s) => ({
       fields: [...s.fields, field],
-      values: { ...s.values, [id]: "" },
+      values: { ...s.values, [id]: inputType === "list" ? "[]" : "" },
     }));
   },
 

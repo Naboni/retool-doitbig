@@ -36,10 +36,11 @@ export function Canvas() {
           if (seg.type === "text") return <span key={i}>{seg.value}</span>;
 
           const val = values[seg.field];
-          const label =
-            fields.find((f) => f.id === seg.field)?.label ?? seg.field;
+          const fieldDef = fields.find((f) => f.id === seg.field);
+          const label = fieldDef?.label ?? seg.field;
+          const supportsInlineEdit = fieldDef?.inputType === "text" || fieldDef?.inputType === "number";
 
-          if (editingField === seg.field) {
+          if (supportsInlineEdit && editingField === seg.field) {
             return (
               <InlineInput
                 key={i}
@@ -52,19 +53,24 @@ export function Canvas() {
             );
           }
 
-          return val ? (
+          const displayed = applyTransform(val, seg.transform);
+          const hasValue = fieldDef?.inputType === "list"
+            ? (() => { try { const a = JSON.parse(val); return Array.isArray(a) && a.some(Boolean); } catch { return false; } })()
+            : !!val;
+
+          return hasValue ? (
             <span
               key={i}
-              className="cursor-pointer text-violet-400 hover:text-violet-300"
-              onClick={() => setEditingField(seg.field)}
+              className={`text-violet-400 ${supportsInlineEdit ? "cursor-pointer hover:text-violet-300" : ""}`}
+              onClick={supportsInlineEdit ? () => setEditingField(seg.field) : undefined}
             >
-              {applyTransform(val, seg.transform)}
+              {displayed}
             </span>
           ) : (
             <span
               key={i}
-              className="cursor-pointer rounded bg-zinc-800 px-1.5 py-0.5 text-[18px] text-zinc-500 hover:bg-zinc-700"
-              onClick={() => setEditingField(seg.field)}
+              className={`rounded bg-zinc-800 px-1.5 py-0.5 text-[18px] text-zinc-500 ${supportsInlineEdit ? "cursor-pointer hover:bg-zinc-700" : ""}`}
+              onClick={supportsInlineEdit ? () => setEditingField(seg.field) : undefined}
             >
               {label}
             </span>

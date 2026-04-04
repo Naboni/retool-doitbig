@@ -1,4 +1,6 @@
-export type Transform = "none" | "uppercase" | "lowercase" | "capitalize";
+export type Transform = "none" | "uppercase" | "lowercase" | "capitalize" | "age" | "join_comma";
+
+export type InputType = "text" | "number" | "date" | "list";
 
 export type Segment =
   | { type: "text"; value: string }
@@ -7,7 +9,7 @@ export type Segment =
 export type Field = {
   id: string;
   label: string;
-  inputType: "text" | "number";
+  inputType: InputType;
   transforms: Transform[];
 };
 
@@ -31,15 +33,22 @@ export type Visibility = {
   conditions: VisibilityCondition[];
 };
 
-export function defaultTransforms(inputType: "text" | "number"): Transform[] {
-  return inputType === "text"
-    ? ["none", "uppercase", "lowercase", "capitalize"]
-    : [];
+export function defaultTransforms(inputType: InputType): Transform[] {
+  switch (inputType) {
+    case "text":
+      return ["none", "uppercase", "lowercase", "capitalize"];
+    case "date":
+      return ["none", "age"];
+    case "list":
+      return ["join_comma"];
+    default:
+      return [];
+  }
 }
 
-export const OPERATORS: { value: Operator; label: string; needsValue: boolean; types: ("text" | "number")[] }[] = [
-  { value: "is_empty", label: "is empty", needsValue: false, types: ["text", "number"] },
-  { value: "is_not_empty", label: "is not empty", needsValue: false, types: ["text", "number"] },
+export const OPERATORS: { value: Operator; label: string; needsValue: boolean; types: InputType[] }[] = [
+  { value: "is_empty", label: "is empty", needsValue: false, types: ["text", "number", "date", "list"] },
+  { value: "is_not_empty", label: "is not empty", needsValue: false, types: ["text", "number", "date", "list"] },
   { value: "equals", label: "equals", needsValue: true, types: ["text", "number"] },
   { value: "not_equals", label: "does not equal", needsValue: true, types: ["text", "number"] },
   { value: "contains", label: "contains", needsValue: true, types: ["text"] },

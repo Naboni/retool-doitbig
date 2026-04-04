@@ -8,6 +8,25 @@ export function applyTransform(value: string, transform: Transform): string {
       return value.toLowerCase();
     case "capitalize":
       return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    case "age": {
+      const birth = new Date(value);
+      if (isNaN(birth.getTime())) return value;
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+      }
+      return String(age);
+    }
+    case "join_comma": {
+      try {
+        const items: string[] = JSON.parse(value);
+        return items.filter(Boolean).join(", ");
+      } catch {
+        return value;
+      }
+    }
     default:
       return value;
   }

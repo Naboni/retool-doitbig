@@ -7,6 +7,8 @@ const TRANSFORMS: { value: Transform; label: string }[] = [
   { value: "uppercase", label: "UPPERCASE" },
   { value: "lowercase", label: "lowercase" },
   { value: "capitalize", label: "Capitalized" },
+  { value: "age", label: "Age (years)" },
+  { value: "join_comma", label: "Comma-separated" },
 ];
 
 type Props = {
@@ -60,7 +62,7 @@ export function PillPopover({
               const newField = e.target.value;
               const newFieldDef = fields.find((f) => f.id === newField);
               const keepTransform = newFieldDef?.transforms.includes(localTransform);
-              const newTransform = keepTransform ? localTransform : "none";
+              const newTransform = keepTransform ? localTransform : (newFieldDef?.transforms[0] ?? "none");
               setLocalField(newField);
               setLocalTransform(newTransform);
               onChange(newField, newTransform);
